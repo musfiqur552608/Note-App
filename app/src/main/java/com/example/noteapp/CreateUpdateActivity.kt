@@ -19,9 +19,9 @@ class CreateUpdateActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
         database = Firebase.database.reference
-
+        val key = database.child("Notes").push().key
         binding.addBtn.setOnClickListener {
-            database.child("Notes").push().setValue(User(binding.noteETxt.text.toString())).addOnCompleteListener {
+            database.child("Notes").child(key!!).setValue(Data(binding.noteETxt.text.toString(),key)).addOnCompleteListener {
                 task ->
                 if(task.isSuccessful){
                     Toast.makeText(this, "Note Added", Toast.LENGTH_LONG).show()
@@ -33,8 +33,5 @@ class CreateUpdateActivity : AppCompatActivity() {
             binding.noteETxt.setText("")
         }
     }
-    data class User(val data:String) {
-        // Null default values create a no-argument default constructor, which is needed
-        // for deserialization from a DataSnapshot.
-    }
+
 }
